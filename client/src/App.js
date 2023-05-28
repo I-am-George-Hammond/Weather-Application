@@ -1,12 +1,12 @@
 import './App.css';
 import React, { useEffect, useState } from 'react';
 
-const API_URL = "http://api.openweathermap.org/data/2.5/weather?zip=0182,za&appid=298a3ab3b55539f0398ba22e87a4433b";
-const secretKey = "298a3ab3b55539f0398ba22e87a4433b";
+const API_URL = 'http://localhost:3001/weather';
 
 function kelvinToCelsius(kelvin) {
   return (kelvin - 273.15).toFixed(2);
 }
+
 function kelvinToFahrenheit(kelvin) {
   return Math.round((kelvin - 273.15) * 9 / 5 + 32);
 }
@@ -16,13 +16,13 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('');
 
   const searchWeather = async (zipCode) => {
-    const response = await fetch(`${API_URL}`);
+    const response = await fetch(`${API_URL}/${zipCode}`);
     const data = await response.json();
     setWeatherData(data);
   };
 
   useEffect(() => {
-    searchWeather();
+    searchWeather(); // Provide a default zip code here
   }, []);
 
   return (
