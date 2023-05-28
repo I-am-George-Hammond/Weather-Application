@@ -7,3 +7,10 @@ const bodyParser = require('body-parser');
 
 // port number to be used 
 const port = 3000;
+
+
+
+
+app.get('/api', (req,res)=> {
+        res.json("temp")
+})
