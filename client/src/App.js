@@ -1,57 +1,56 @@
-import './App.css';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 
-const API_URL = 'http://localhost:3001/weather';
-
-function kelvinToCelsius(kelvin) {
-  return (kelvin - 273.15).toFixed(2);
-}
-
-function kelvinToFahrenheit(kelvin) {
-  return Math.round((kelvin - 273.15) * 9 / 5 + 32);
-}
-
-function App() {
+const App = () => {
+  const [zipcode, setZipcode] = useState('');
   const [weatherData, setWeatherData] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const searchWeather = async (zipCode) => {
-    const response = await fetch(`${API_URL}/${zipCode}`);
-    const data = await response.json();
-    setWeatherData(data);
+  const handleZipcodeChange = event => {
+    setZipcode(event.target.value);
   };
 
-  useEffect(() => {
-    searchWeather(); // Provide a default zip code here
-  }, []);
+  const handleSubmit = event => {
+    event.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    axios
+      .get(`/weather/${zipcode}`)
+      .then(response => {
+        setWeatherData(response.data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error retrieving weather data:', error);
+        setError('Failed to retrieve weather data');
+        setLoading(false);
+      });
+  };
 
   return (
     <div>
       <h1>Weather App</h1>
+      <form onSubmit={handleSubmit}>
+        <input type="text" value={zipcode} onChange={handleZipcodeChange} placeholder="Enter ZIP code" />
+        <button type="submit">Get Weather</button>
+      </form>
 
-      <div className="searchZipCode">
-        <input
-          placeholder="Enter the zip code "
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        ></input>
-        <button onClick={() => searchWeather(searchTerm)}>Search</button>
-      </div>
+      {loading && <p>Loading...</p>}
+      {error && <p>{error}</p>}
 
       {weatherData && (
-        <div className="container">
-          <div className="Weather">
-            <p>City: {weatherData.name}</p>
-            <p>Temperature: {kelvinToCelsius(weatherData.main.temp)}°C</p>
-            <p>Feels Like: {kelvinToCelsius(weatherData.main.feels_like)}°C</p>
-            <p>Weather: {weatherData.weather[0].main}</p>
-            <p>Description: {weatherData.weather[0].description}</p>
-            <p>Wind Speed: {weatherData.wind.speed} m/s</p>
-          </div>
+        <div>
+          <p>Min Temperature: {weatherData.minTemp}</p>
+          <p>Max Temperature: {weatherData.maxTemp}</p>
+          <p>Current Temperature: {weatherData.currentTemp}</p>
+          <p>Wind Speed: {weatherData.windSpeed}</p>
         </div>
       )}
     </div>
   );
-}
+};
 
 export default App;
+

@@ -1,26 +1,39 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const fetch = require('node-fetch');
+const axios = require('axios');
 
 const app = express();
 const PORT = 3001;
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.get('/weather/:zipcode', (req, res) => {
+  const { zipcode } = req.params;
+  const API_URL = 'https://api.openweathermap.org/data/2.5/weather?units=metric&q=';
+  const secretKey = 'f8137048d0461e134ea214a4760d67b9';
 
-const API_URL = 'http://api.openweathermap.org/data/2.5/weather';
-const secretKey = '298a3ab3b55539f0398ba22e87a4433b';
+  const apiUrl = `${API_URL}?zip=${zipcode}&appid=${secretKey}`;
 
-app.get('/weather/:zipCode', async (req, res) => {
-  const { zipCode } = req.params;
+  axios
+    .get(apiUrl)
+    .then(response => {
+      const { main, wind } = response.data;
+      const { temp_min, temp_max, temp } = main;
+      const { speed } = wind;
 
-  const url =` ${API_URL}?zip=${zipCode},za&appid=${secretKey}`;
-  const response = await fetch(url);
-  const data = await response.json();
+      const weatherData = {
+        minTemp: temp_min,
+        maxTemp: temp_max,
+        currentTemp: temp,
+        windSpeed: speed,
+      };
 
-  res.json(data);
+      res.json(weatherData);
+    })
+    .catch(error => {
+      console.error('Error retrieving weather data:', error);
+      res.status(500).json({ error: 'Failed to retrieve weather data' });
+    });
 });
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
