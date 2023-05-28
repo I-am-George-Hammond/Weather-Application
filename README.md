@@ -1,7 +1,7 @@
 ##  Weather Application :cloud::sunny:
 
 ## **1. Overview** 
-We as **third year** students were tasked to build a weather application as our project for WPR 381. The application requires us to use a 
+We as **third year** students were tasked to build a weather application as our project for WPR381. The application requires us to use a 
 weather API for our backend Express server. For our frontend we were required to use React. 
 
 ## **2. Functionality of application** 
