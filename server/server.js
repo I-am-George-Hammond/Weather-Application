@@ -1,15 +1,18 @@
+const PORT = 3000;
 const express = require('express');
 const axios = require('axios');
 
 const app = express();
-const PORT = 3001;
 
-app.get('/weather/:zipcode', (req, res) => {
-  const { zipcode } = req.params;
-  const API_URL = 'https://api.openweathermap.org/data/2.5/weather?units=metric&q=';
-  const secretKey = 'f8137048d0461e134ea214a4760d67b9';
+const baseURL = 'https://api.openweathermap.org/data/2.5/weather?zip';
+const secretKey = 'f8137048d0461e134ea214a4760d67b9';
 
-  const apiUrl = `${API_URL}?zip=${zipcode}&appid=${secretKey}`;
+
+app.get('/weather/:zipcode', async (req, res) => {
+  const zipcode = req.params;
+
+
+  const apiUrl = baseURL+zipcode +",za&appid=" + secretKey;
 
   axios
     .get(apiUrl)
@@ -32,6 +35,8 @@ app.get('/weather/:zipcode', (req, res) => {
       res.status(500).json({ error: 'Failed to retrieve weather data' });
     });
 });
+
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
