@@ -1,44 +1,47 @@
 import './App.css';
 import React, { useEffect, useState } from 'react';
 
-
-
 function kelvinToCelsius(kelvin) {
   return (kelvin - 273.15).toFixed(2);
 }
-function kelvinToFahrenheit(kelvin) {
-  return Math.round((kelvin - 273.15) * 9 / 5 + 32);
-}
 
 function App() {
-
   const [weatherData, setWeatherData] = useState(null);
-  //Send a request to the API which then returns the weather data in JSON form.
-  useEffect(()=>{
-    fetch("/api").then(
-      response => response.json()
-    ).then(
-      data => {
-        setWeatherData(data)
-      }
-    )
-  }, [])
+  const [userZipCode, setUserZipCode] = useState('');
 
- // const [searchTerm, setSearchTerm] = useState('');
+  const fetchWeatherData = (zipCode) => {
+    const API_URL = `http://api.openweathermap.org/data/2.5/weather?zip=${zipCode},za&appid=298a3ab3b55539f0398ba22e87a4433b`;
 
-  // const searchWeather = async (zipCode) => {
-  //   const response = await fetch(`${API_URL}`);
-  //   const data = await response.json();
-  //   setWeatherData(data);
-  // };
+    fetch(API_URL)
+      .then((response) => response.json())
+      .then((data) => {
+        setWeatherData(data);
+      })
+      .catch((error) => {
+        console.error(error);
+        setWeatherData(null);
+      });
+  };
 
-  // useEffect(() => {
-  //   searchWeather();
-  // }, []);
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+    fetchWeatherData(userZipCode);
+  };
 
   return (
     <div>
       <h1>Weather App</h1>
+      <form onSubmit={handleFormSubmit}>
+        <label>
+          Enter Zip Code:
+          <input
+            type="text"
+            value={userZipCode}
+            onChange={(event) => setUserZipCode(event.target.value)}
+          />
+        </label>
+        <button type="submit">Get Weather</button>
+      </form>
 
       {weatherData && (
         <div className="container">
@@ -52,17 +55,6 @@ function App() {
           </div>
         </div>
       )}
-
-      {/* <div className="searchZipCode">
-        <input
-          placeholder="Enter the zip code "
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        ></input>
-        <button onClick={() => searchWeather(searchTerm)}>Search</button>
-      </div>
-
-       */}
     </div>
   );
 }
