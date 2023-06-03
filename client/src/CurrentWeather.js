@@ -9,48 +9,74 @@ import React, { useEffect, useState } from 'react';
       }
       
       function App() {
-      
         const [weatherData, setWeatherData] = useState(null);
-        //Send a request to the API which then returns the weather data in JSON form.
-        useEffect(()=>{
-          fetch("/api").then(
-            response => response.json()
-          ).then(
-            data => {
-              setWeatherData(data)
-            }
-          )
-        }, [])
+        const [userZipCode, setUserZipCode] = useState('');
+        const [isCelsius, setIsCelsius] = useState(true);
       
-       // const [searchTerm, setSearchTerm] = useState('');
+        const fetchWeatherData = (zipCode) => {
+          const API_URL = `http://api.openweathermap.org/data/2.5/weather?zip=${zipCode},za&appid=298a3ab3b55539f0398ba22e87a4433b`;
       
-        // const searchWeather = async (zipCode) => {
-        //   const response = await fetch(`${API_URL}`);
-        //   const data = await response.json();
-        //   setWeatherData(data);
-        // };
+          fetch(API_URL)
+            .then((response) => response.json())
+            .then((data) => {
+              setWeatherData(data);
+            })
+            .catch((error) => {
+              console.error(error);
+              setWeatherData(null);
+            });
+        };
       
-        // useEffect(() => {
-        //   searchWeather();
-        // }, []);
+        const handleFormSubmit = (event) => {
+          event.preventDefault();
+          fetchWeatherData(userZipCode);
+        };
+      
+        const convertTemperature = (temperature) => {
+          if (isCelsius) {
+            return kelvinToCelsius(temperature) + '°C';
+          } else {
+            return kelvinToFahrenheit(temperature) + '°F';
+          }
+        };
+      
+        const handleToggleClick = () => {
+          setIsCelsius(!isCelsius);
+        };
       
         return (
           <div>
             <h1>Weather App</h1>
+            <form onSubmit={handleFormSubmit}>
+              <label>
+                Enter Zip Code:
+                <input
+                  type="text"
+                  value={userZipCode}
+                  onChange={(event) => setUserZipCode(event.target.value)}
+                />
+              </label>
+              <button type="submit">Get Weather</button>
+            </form>
       
             {weatherData && (
               <div className="container">
                 <div className="Weather">
                   <p>City: {weatherData.name}</p>
-                  <p>Temperature: {kelvinToCelsius(weatherData.main.temp)}°C</p>
-                  <p>Feels Like: {kelvinToCelsius(weatherData.main.feels_like)}°C</p>
+                  <p>Temperature: {convertTemperature(weatherData.main.temp)}</p>
+                  <p>Feels Like: {convertTemperature(weatherData.main.feels_like)}</p>
                   <p>Weather: {weatherData.weather[0].main}</p>
                   <p>Description: {weatherData.weather[0].description}</p>
                   <p>Wind Speed: {weatherData.wind.speed} m/s</p>
                 </div>
               </div>
             )}
-
+      
+            <div className="Toggle">
+              <button onClick={handleToggleClick}>
+                {isCelsius ? 'Switch to Fahrenheit' : 'Switch to Celsius'}
+              </button>
+            </div>
           </div>
         );
       }
