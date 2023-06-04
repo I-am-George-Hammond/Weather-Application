@@ -43,7 +43,8 @@ import React, { useEffect, useState } from 'react';
         const handleToggleClick = () => {
           setIsCelsius(!isCelsius);
         };
-      
+
+       
         return (
           <div className='container'>
             <h1>Weather App</h1>
@@ -68,7 +69,7 @@ import React, { useEffect, useState } from 'react';
               <div className="displayWeather">
                 <div className='weatherIcon'>
 
-                {/* weatherIcon(weatherData) */}
+                <img src={weatherIcon(weatherData)} alt="weather icon" />
 
                 </div>
 
@@ -92,22 +93,22 @@ import React, { useEffect, useState } from 'react';
       function weatherIcon(weatherData) {
         let weather = weatherData.weather[0].main;
         if (weather === 'Clouds') {
-          return <img src="./Images/Clouds.png" alt="clouds" />;
+          return "./Images/Clouds.png";
         } 
         else if (weather === 'Clear') {
-          return <img src="./Images/Clear.png" alt="clear" />;
+          return "./Images/Clear.png";
         } 
         else if (weather === 'Drizzle') {
-          return <img src="./Images/Drizzle.png" alt="drizzle" />;
+          return "./Images/Drizzle.png" ;
         }
         else if (weather === 'Mist') {
-          return <img src="./Images/Mist.png" alt="mist" />;
+          return "./Images/Mist.png" ;
         } 
         else if (weather === 'Rain') {
-          return <img src="./Images/Rain.png" alt="rain" />;
+          return "./Images/Rain.png" ;
         } 
         else if (weather === 'Snow') {
-          return <img src="./Images/Snow" alt="snow" />;
+          return "./Images/Snow" ;
         } 
         
       };
