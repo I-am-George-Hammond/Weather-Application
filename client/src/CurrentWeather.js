@@ -12,6 +12,7 @@ import React, { useEffect, useState } from 'react';
         const [weatherData, setWeatherData] = useState(null);
         const [userZipCode, setUserZipCode] = useState('');
         const [isCelsius, setIsCelsius] = useState(true);
+        const [zipCodeError, setZipCodeError] = useState('');
       
         const fetchWeatherData = (zipCode) => {
           const API_URL = `http://api.openweathermap.org/data/2.5/weather?zip=${zipCode},za&appid=298a3ab3b55539f0398ba22e87a4433b`;
@@ -29,7 +30,15 @@ import React, { useEffect, useState } from 'react';
       
         const handleFormSubmit = (event) => {
           event.preventDefault();
-          fetchWeatherData(userZipCode);
+          if (userZipCode.length !== 4) {
+            setZipCodeError('Zip code should be exactly 4 numbers.');
+            setWeatherData(null); // Clear the weather data
+            setUserZipCode(''); // Clear the input
+          } else {
+            setZipCodeError('');
+            fetchWeatherData(userZipCode);
+            setUserZipCode(''); // Clear the input
+          }
         };
       
         const convertTemperature = (temperature) => {
