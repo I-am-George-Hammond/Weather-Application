@@ -33,6 +33,7 @@ function App() {
     if (userZipCode.length !== 4 || isNaN(userZipCode)) {
       alert('Please enter a valid 4-digit zip code.');
       setUserZipCode('');
+      setWeatherData(null);
       return;
     }
 
@@ -91,6 +92,7 @@ function App() {
 }
 
 export default App;
+
 
 
 
