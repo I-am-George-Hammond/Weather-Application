@@ -16,7 +16,12 @@ These are some of the functionalities our application will have
 - React
 - API
 
-## **4. Project Contributors**
+## **4. How to Run**
+STEP 1: Run the server.js file using node 
+STEP 2: Go to the client directory and run the react app (command: npm start)
+
+
+## **5. Project Contributors**
 
 |Name   |Surname     | StudentID|
 |:-----:|:----------:|:--------:|
