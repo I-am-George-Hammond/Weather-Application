@@ -45,11 +45,11 @@ import React, { useEffect, useState } from 'react';
         };
       
         return (
-          <div>
+          <div className='container'>
             <h1>Weather App</h1>
-            <form onSubmit={handleFormSubmit}>
+            <form className='search' placeholder='Enter Zip Code:' onSubmit={handleFormSubmit}>
               <label>
-                Enter Zip Code:
+                
                 <input
                   type="text"
                   value={userZipCode}
@@ -58,9 +58,20 @@ import React, { useEffect, useState } from 'react';
               </label>
               <button type="submit">Get Weather</button>
             </form>
+            <div className="Toggle">
+              <button onClick={handleToggleClick}>
+                {isCelsius ? 'Switch to Fahrenheit' : 'Switch to Celsius'}
+              </button>
+            </div>
       
             {weatherData && (
-              <div className="container">
+              <div className="displayWeather">
+                <div className='weatherIcon'>
+
+                {/* weatherIcon(weatherData) */}
+
+                </div>
+
                 <div className="Weather">
                   <p>City: {weatherData.name}</p>
                   <p>Temperature: {convertTemperature(weatherData.main.temp)}</p>
@@ -72,14 +83,40 @@ import React, { useEffect, useState } from 'react';
               </div>
             )}
       
-            <div className="Toggle">
-              <button onClick={handleToggleClick}>
-                {isCelsius ? 'Switch to Fahrenheit' : 'Switch to Celsius'}
-              </button>
-            </div>
+            
           </div>
         );
       }
+      
+      //change weather icon according to weather
+      function weatherIcon(weatherData) {
+        let weather = weatherData.weather[0].main;
+        if (weather === 'Clouds') {
+          return <img src="./Images/Clouds.png" alt="clouds" />;
+        } 
+        else if (weather === 'Clear') {
+          return <img src="./Images/Clear.png" alt="clear" />;
+        } 
+        else if (weather === 'Drizzle') {
+          return <img src="./Images/Drizzle.png" alt="drizzle" />;
+        }
+        else if (weather === 'Mist') {
+          return <img src="./Images/Mist.png" alt="mist" />;
+        } 
+        else if (weather === 'Rain') {
+          return <img src="./Images/Rain.png" alt="rain" />;
+        } 
+        else if (weather === 'Snow') {
+          return <img src="./Images/Snow" alt="snow" />;
+        } 
+        
+      };
+
+
+
+
+
+
 
   export default App;
   
