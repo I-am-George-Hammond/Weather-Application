@@ -69,9 +69,9 @@ import React, { useEffect, useState } from 'react';
       
             {weatherData && (
               <div className="displayWeather">
-                <div className='weatherIcon'>
+                <div >
 
-                <img src={weatherIcon(weatherData)} alt="weather icon" />
+                <img className='weatherIcon' src={weatherIcon(weatherData)} alt="weather icon" />
 
                 </div>
 
