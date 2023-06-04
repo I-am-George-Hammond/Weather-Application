@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
+function kelvinToCelsius(kelvin) {
+  return (kelvin - 273.15).toFixed(2);
+}
 
       function kelvinToCelsius(kelvin) {
         return (kelvin - 273.15).toFixed(2);
@@ -104,43 +107,37 @@ import React, { useEffect, useState } from 'react';
                   </div>
 
                 </div>
+
               </div>
-            )}
-      
-            
+            </div>
           </div>
-        );
-      }
-      
-      //change weather icon according to weather
-      function weatherIcon(weatherData) {
-        let weather = weatherData.weather[0].main;
-        if (weather === 'Clouds') {
-          return "./Images/Clouds.png";
-        } 
-        else if (weather === 'Clear') {
-          return "./Images/Clear.png";
-        } 
-        else if (weather === 'Drizzle') {
-          return "./Images/Drizzle.png" ;
-        }
-        else if (weather === 'Mist') {
-          return "./Images/Mist.png" ;
-        } 
-        else if (weather === 'Rain') {
-          return "./Images/Rain.png" ;
-        } 
-        else if (weather === 'Snow') {
-          return "./Images/Snow" ;
-        } 
-        
-      };
+        </div>
+      )}
+    </div>
+  );
+}
+
+// change weather icon according to weather
+function weatherIcon(weatherData) {
+  let weather = weatherData.weather[0].main;
+  if (weather === 'Clouds') {
+    return "./Images/Clouds.png";
+  } else if (weather === 'Clear') {
+    return "./Images/Clear.png";
+  } else if (weather === 'Drizzle') {
+    return "./Images/Drizzle.png";
+  } else if (weather === 'Mist') {
+    return "./Images/Mist.png";
+  } else if (weather === 'Rain') {
+    return "./Images/Rain.png";
+  } else if (weather === 'Snow') {
+    return "./Images/Snow.png";
+  }
+}
+
+export default App;
 
 
 
 
-
-
-
-  export default App;
   
