@@ -43,13 +43,14 @@ import React, { useEffect, useState } from 'react';
         const handleToggleClick = () => {
           setIsCelsius(!isCelsius);
         };
-      
+
+       
         return (
-          <div>
+          <div className='container'>
             <h1>Weather App</h1>
-            <form onSubmit={handleFormSubmit}>
+            <form className='search' placeholder='Enter Zip Code:' onSubmit={handleFormSubmit}>
               <label>
-                Enter Zip Code:
+                
                 <input
                   type="text"
                   value={userZipCode}
@@ -58,28 +59,79 @@ import React, { useEffect, useState } from 'react';
               </label>
               <button type="submit">Get Weather</button>
             </form>
+            <br/>
+            <div className="Toggle">
+              <button className="switch" onClick={handleToggleClick}>
+                {isCelsius ? 'Switch to Fahrenheit' : 'Switch to Celsius'}
+              </button>
+            </div>
+            <br/>
       
             {weatherData && (
-              <div className="container">
+              <div className="displayWeather">
+                <div className='weatherIcon'>
+
+                <img src={weatherIcon(weatherData)} alt="weather icon" />
+
+                </div>
+
                 <div className="Weather">
-                  <p>City: {weatherData.name}</p>
-                  <p>Temperature: {convertTemperature(weatherData.main.temp)}</p>
+                  <h1>{weatherData.name}</h1>
+                  <br />
+                  <h1 className='tempNow'>{convertTemperature(weatherData.main.temp)}</h1>
+                  <br />
                   <p>Feels Like: {convertTemperature(weatherData.main.feels_like)}</p>
-                  <p>Weather: {weatherData.weather[0].main}</p>
-                  <p>Description: {weatherData.weather[0].description}</p>
-                  <p>Wind Speed: {weatherData.wind.speed} m/s</p>
+                  {/* <p>Weather: {weatherData.weather[0].main}</p> */}
+
+                  <div className='moreDetails'>
+                    <div className='col'>
+                      <img src="./Images/Humidity.png" />
+                      <p>Humidity: {weatherData.main.humidity}%</p>
+                    </div>
+                    <div className='col'>
+                      <img src="./Images/Wind.png" />
+                      <p>Wind Speed: {weatherData.wind.speed} km/h</p>
+                    </div>
+                  </div>
+
                 </div>
               </div>
             )}
       
-            <div className="Toggle">
-              <button onClick={handleToggleClick}>
-                {isCelsius ? 'Switch to Fahrenheit' : 'Switch to Celsius'}
-              </button>
-            </div>
+            
           </div>
         );
       }
+      
+      //change weather icon according to weather
+      function weatherIcon(weatherData) {
+        let weather = weatherData.weather[0].main;
+        if (weather === 'Clouds') {
+          return "./Images/Clouds.png";
+        } 
+        else if (weather === 'Clear') {
+          return "./Images/Clear.png";
+        } 
+        else if (weather === 'Drizzle') {
+          return "./Images/Drizzle.png" ;
+        }
+        else if (weather === 'Mist') {
+          return "./Images/Mist.png" ;
+        } 
+        else if (weather === 'Rain') {
+          return "./Images/Rain.png" ;
+        } 
+        else if (weather === 'Snow') {
+          return "./Images/Snow" ;
+        } 
+        
+      };
+
+
+
+
+
+
 
   export default App;
   
