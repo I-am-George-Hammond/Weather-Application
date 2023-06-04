@@ -14,32 +14,44 @@ import React, { useEffect, useState } from 'react';
         const [isCelsius, setIsCelsius] = useState(true);
         const [zipCodeError, setZipCodeError] = useState('');
       
-        const fetchWeatherData = (zipCode) => {
-          const API_URL = `http://api.openweathermap.org/data/2.5/weather?zip=${zipCode},za&appid=298a3ab3b55539f0398ba22e87a4433b`;
+        useEffect(()=>{
+          fetch("/get-weatherdata")
+          .then(
+            response => response.json()
+          )
+          .then(
+            data =>{
+              setWeatherData(data)
+            }
+          )
+        }, [])
+
+        // const fetchWeatherData = (zipCode) => {
+        //   const API_URL = `http://api.openweathermap.org/data/2.5/weather?zip=${zipCode},za&appid=298a3ab3b55539f0398ba22e87a4433b`;
       
-          fetch(API_URL)
-            .then((response) => response.json())
-            .then((data) => {
-              setWeatherData(data);
-            })
-            .catch((error) => {
-              console.error(error);
-              setWeatherData(null);
-            });
-        };
+        //   fetch(API_URL)
+        //     .then((response) => response.json())
+        //     .then((data) => {
+        //       setWeatherData(data);
+        //     })
+        //     .catch((error) => {
+        //       console.error(error);
+        //       setWeatherData(null);
+        //     });
+        // };
       
-        const handleFormSubmit = (event) => {
-          event.preventDefault();
-          if (userZipCode.length !== 4) {
-            setZipCodeError('Zip code should be exactly 4 numbers.');
-            setWeatherData(null); // Clear the weather data
-            setUserZipCode(''); // Clear the input
-          } else {
-            setZipCodeError('');
-            fetchWeatherData(userZipCode);
-            setUserZipCode(''); // Clear the input
-          }
-        };
+        // const handleFormSubmit = (event) => {
+        //   event.preventDefault();
+        //   if (userZipCode.length !== 4) {
+        //     setZipCodeError('Zip code should be exactly 4 numbers.');
+        //     setWeatherData(null); // Clear the weather data
+        //     setUserZipCode(''); // Clear the input
+        //   } else {
+        //     setZipCodeError('');
+        //     fetchWeatherData(userZipCode);
+        //     setUserZipCode(''); // Clear the input
+        //   }
+        // };
       
         const convertTemperature = (temperature) => {
           if (isCelsius) {
@@ -57,7 +69,7 @@ import React, { useEffect, useState } from 'react';
         return (
           <div className='container'>
             <h1>Weather App</h1>
-            <form className='search' placeholder='Enter Zip Code:' onSubmit={handleFormSubmit}>
+            <form className='search' placeholder='Enter Zip Code:' > 
               <label>
                 
                 <input
