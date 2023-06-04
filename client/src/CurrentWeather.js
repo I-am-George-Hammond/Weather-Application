@@ -4,96 +4,110 @@ function kelvinToCelsius(kelvin) {
   return (kelvin - 273.15).toFixed(2);
 }
 
-function kelvinToFahrenheit(kelvin) {
-  return Math.round((kelvin - 273.15) * 9 / 5 + 32);
-}
+      function kelvinToCelsius(kelvin) {
+        return (kelvin - 273.15).toFixed(2);
+      }
+      function kelvinToFahrenheit(kelvin) {
+        return Math.round((kelvin - 273.15) * 9 / 5 + 32);
+      }
+      
+      function App() {
+        const [weatherData, setWeatherData] = useState(null);
+        const [userZipCode, setUserZipCode] = useState('');
+        const [isCelsius, setIsCelsius] = useState(true);
+        const [zipCodeError, setZipCodeError] = useState('');
+      
+        const fetchWeatherData = (zipCode) => {
+          const API_URL = `http://api.openweathermap.org/data/2.5/weather?zip=${zipCode},za&appid=298a3ab3b55539f0398ba22e87a4433b`;
+      
+          fetch(API_URL)
+            .then((response) => response.json())
+            .then((data) => {
+              setWeatherData(data);
+            })
+            .catch((error) => {
+              console.error(error);
+              setWeatherData(null);
+            });
+        };
+      
+        const handleFormSubmit = (event) => {
+          event.preventDefault();
+          if (userZipCode.length !== 4) {
+            setZipCodeError('Zip code should be exactly 4 numbers.');
+            setWeatherData(null); // Clear the weather data
+            setUserZipCode(''); // Clear the input
+          } else {
+            setZipCodeError('');
+            fetchWeatherData(userZipCode);
+            setUserZipCode(''); // Clear the input
+          }
+        };
+      
+        const convertTemperature = (temperature) => {
+          if (isCelsius) {
+            return kelvinToCelsius(temperature) + '°C';
+          } else {
+            return kelvinToFahrenheit(temperature) + '°F';
+          }
+        };
+      
+        const handleToggleClick = () => {
+          setIsCelsius(!isCelsius);
+        };
 
-function App() {
-  const [weatherData, setWeatherData] = useState(null);
-  const [userZipCode, setUserZipCode] = useState('');
-  const [isCelsius, setIsCelsius] = useState(true);
-  const [zipCodeError, setZipCodeError] = useState('');
+       
+        return (
+          <div className='container'>
+            <h1>Weather App</h1>
+            <form className='search' placeholder='Enter Zip Code:' onSubmit={handleFormSubmit}>
+              <label>
+                
+                <input
+                  type="text"
+                  value={userZipCode}
+                  onChange={(event) => setUserZipCode(event.target.value)}
+                />
+              </label>
+              <button type="submit">Get Weather</button>
+            </form>
+            <br/>
+            <div className="Toggle">
+              <button className="switch" onClick={handleToggleClick}>
+                {isCelsius ? 'Switch to Fahrenheit' : 'Switch to Celsius'}
+              </button>
+            </div>
+            <br/>
+      
+            {weatherData && (
+              <div className="displayWeather">
+                <div >
 
-  const fetchWeatherData = (zipCode) => {
-    const API_URL = `http://api.openweathermap.org/data/2.5/weather?zip=${zipCode},za&appid=298a3ab3b55539f0398ba22e87a4433b`;
+                <img className='weatherIcon' src={weatherIcon(weatherData)} alt="weather icon" />
 
-    fetch(API_URL)
-      .then((response) => response.json())
-      .then((data) => {
-        setWeatherData(data);
-      })
-      .catch((error) => {
-        console.error(error);
-        setWeatherData(null);
-      });
-  };
+                </div>
 
-  const handleFormSubmit = (event) => {
-    event.preventDefault();
-    if (userZipCode.length !== 4) {
-      setZipCodeError('Zip code should be exactly 4 numbers.');
-      setWeatherData(null); // Clear the weather data
-      setUserZipCode(''); // Clear the input
-    } else {
-      setZipCodeError('');
-      fetchWeatherData(userZipCode);
-      setUserZipCode(''); // Clear the input
-    }
-  };
+                <div className="Weather">
+                  <h1>{weatherData.name}</h1>
+                  <br />
+                  <h1 className='tempNow'>{convertTemperature(weatherData.main.temp)}</h1>
+                  <br />
+                  <p>Feels Like: {convertTemperature(weatherData.main.feels_like)}</p>
+                  {/* <p>Weather: {weatherData.weather[0].main}</p> */}
 
-  const convertTemperature = (temperature) => {
-    if (isCelsius) {
-      return kelvinToCelsius(temperature) + '°C';
-    } else {
-      return kelvinToFahrenheit(temperature) + '°F';
-    }
-  };
+                  <div className='moreDetails'>
+                    <div className='col'>
+                      <img src="./Images/Humidity.png" />
+                      <p>Humidity: {weatherData.main.humidity}%</p>
+                    </div>
+                    <div className='col'>
+                      <img src="./Images/Wind.png" />
+                      <p>Wind Speed: {weatherData.wind.speed} km/h</p>
+                    </div>
+                  </div>
 
-  const handleToggleClick = () => {
-    setIsCelsius(!isCelsius);
-  };
+                </div>
 
-  return (
-    <div className='container'>
-      <h1>Weather App</h1>
-      <form className='search' placeholder='Enter Zip Code:' onSubmit={handleFormSubmit}>
-        <label>
-          <input
-            type="text"
-            value={userZipCode}
-            onChange={(event) => setUserZipCode(event.target.value)}
-          />
-        </label>
-        <button type="submit">Get Weather</button>
-      </form>
-      {zipCodeError && <p>{zipCodeError}</p>}
-      <div className="Toggle">
-        <button className="switch" onClick={handleToggleClick}>
-          {isCelsius ? 'Switch to Fahrenheit' : 'Switch to Celsius'}
-        </button>
-      </div>
-
-      {weatherData && (
-        <div className="displayWeather">
-          <div className='weatherIcon'>
-            <img src={weatherIcon(weatherData)} alt="weather icon" />
-          </div>
-
-          <div className="Weather">
-            <h1>{weatherData.name}</h1>
-            <br />
-            <h1 className='tempNow'>{convertTemperature(weatherData.main.temp)}</h1>
-            <br />
-            <p>Feels Like: {convertTemperature(weatherData.main.feels_like)}</p>
-
-            <div className='moreDetails'>
-              <div className='col'>
-                <img src="./Images/Humidity.png" alt="humidity icon" />
-                <p>Humidity: {weatherData.main.humidity}%</p>
-              </div>
-              <div className='col'>
-                <img src="./Images/Wind.png" alt="wind icon" />
-                <p>Wind Speed: {weatherData.wind.speed} km/h</p>
               </div>
             </div>
           </div>

@@ -84,8 +84,14 @@ body{
 
 .displayWeather{
   border-radius: 0.75rem;
-  background-color: #0059ff42;
+  background-color: #0059ffcd;
   padding: 20px;
+}
+
+.displayWeather:hover {
+  background-color: #0055fe;
+  box-shadow: 0 0 20px #6fc5ff50;
+  
 }
 
 .moreDetails{
@@ -119,14 +125,14 @@ body{
 }
 
 .switch{
-  display: flex;
+  
   justify-content: center;
   align-items: center;
   margin-top: 20px;
 
 
   padding: 12.5px 30px;
-  width: 100px;
+  width: 300px;
   border: 0;
   border-radius: 100px;
   background-color: #2ba8fb;
@@ -138,5 +144,9 @@ body{
 .switch:hover {
   background-color: #0055fe;
   box-shadow: 0 0 20px #6fc5ff50;
+  transform: scale(1.1);
+}
+
+.weatherIcon:hover{
   transform: scale(1.1);
 }
