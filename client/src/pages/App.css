@@ -171,3 +171,11 @@ body{
   box-shadow: 0 0 20px #6fc5ff50;
   transform: scale(1.1);
 }
+
+.error{
+  font-size: x-large;
+  color: red;
+  text-align: center;
+  height: 300px;
+
+}

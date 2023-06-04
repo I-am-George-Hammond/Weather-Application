@@ -24,11 +24,12 @@ import React, { useEffect, useState } from 'react';
               setWeatherData(data)
             }
           )
+          .catch((err)=>{
+            console.log('error: ' + err)
+          })
         }, [])
 
      
-         
-      
         const convertTemperature = (temperature) => {
           if (isCelsius) {
             return kelvinToCelsius(temperature) + '°C';
