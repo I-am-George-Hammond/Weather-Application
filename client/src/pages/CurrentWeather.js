@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 
       function kelvinToCelsius(kelvin) {
-        return (kelvin - 273.15).toFixed(2);
+        return Math.round((kelvin - 273.15).toFixed(2));
       }
       function kelvinToFahrenheit(kelvin) {
         return Math.round((kelvin - 273.15) * 9 / 5 + 32);
@@ -69,17 +69,11 @@ import React, { useEffect, useState } from 'react';
         return (
           <div className='container'>
             <h1>Weather App</h1>
-            <form className='search' placeholder='Enter Zip Code:' > 
-              <label>
-                
-                <input
-                  type="text"
-                  value={userZipCode}
-                  onChange={(event) => setUserZipCode(event.target.value)}
-                />
-              </label>
-              <button type="submit">Get Weather</button>
-            </form>
+            <br/>
+            <div>
+              <button className='backBtn' onClick={() => window.location.href='/'}>New Location</button>
+            </div>
+            
             <br/>
             <div className="Toggle">
               <button className="switch" onClick={handleToggleClick}>
